@@ -18,6 +18,7 @@ import android.widget.TextView;
 public class FragmentOne extends Fragment {
 
     private NavController navController;
+    private TextView textView;
 
     public FragmentOne()
     {
@@ -25,26 +26,29 @@ public class FragmentOne extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_one, container, false);
-        navController = NavHostFragment.findNavController(this);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+        textView = view.findViewById(R.id.textView);
 
-        Button buttonToSecondFragment = view.findViewById(R.id.button);
-        buttonToSecondFragment.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.action_first_fragment_to_second_fragment);
+                String text = textView.getText().toString();
+                Bundle bundle = new Bundle();
+                bundle.putString("text", text);
+                navController.navigate(R.id.action_first_fragment_to_second_fragment, bundle);
             }
         });
 
-        Button buttonToThirdFragment = view.findViewById(R.id.button2);
-        buttonToThirdFragment.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navController.navigate(R.id.action_first_fragment_to_third_fragment);
+                String text = textView.getText().toString();
+                Bundle bundle = new Bundle();
+                bundle.putString("text", text);
+                navController.navigate(R.id.action_first_fragment_to_third_fragment, bundle);
             }
         });
-
-        return view;
     }
 }
